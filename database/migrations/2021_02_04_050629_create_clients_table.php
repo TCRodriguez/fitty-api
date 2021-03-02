@@ -15,7 +15,18 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('trainer_id');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->integer('starting_weight');
+            $table->string('email');
+            $table->string('phone_number')->nullable();        
             $table->timestamps();
+
+            $table->foreign('trainer_id')
+                ->references('id')
+                ->on('trainers')
+                ->onDelete('cascade');
         });
     }
 

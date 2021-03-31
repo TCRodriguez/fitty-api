@@ -14,8 +14,14 @@ class CreateWorkoutsTable extends Migration
     public function up()
     {
         Schema::create('workouts', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('client_id');
+            $table->string('name')->nullable();
+            $table->date('completed_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('client_id')->references('id')->on('clients')
+                ->onDelete('cascade');
         });
     }
 

@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Trainer;
+use App\Models\Exercise;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TrainerFactory extends Factory
+class ExerciseFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Trainer::class;
+    protected $model = Exercise::class;
 
     /**
      * Define the model's default state.
@@ -22,13 +22,8 @@ class TrainerFactory extends Factory
     public function definition()
     {
         return [
-            //
-            'first_name' => 'Tonatiuh',
-            'last_name' => 'Rodriguez',
-            'user_name' => 'azt3k',
-            'email' => 'tr@example.com',
-            'password' => 'password123'
-
+            'trainer_id' => 1,
+            'exercise_name' => $this->faker->word()
         ];
     }
 }

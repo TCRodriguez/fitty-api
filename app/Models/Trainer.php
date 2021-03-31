@@ -13,4 +13,9 @@ class Trainer extends Model
     {
         return $this->hasMany(Client::class);
     }
+
+    public function exercises()
+    {
+        return $this->hasMany(Exercise::class);
+    }
 }

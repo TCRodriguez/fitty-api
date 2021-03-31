@@ -23,7 +23,7 @@ class ClientFactory extends Factory
     public function definition()
     {
         return [
-            'trainer_id' => Trainer::factory(),
+            'trainer_id' => 1,
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'starting_weight' => $this->faker->numberBetween(100, 400),

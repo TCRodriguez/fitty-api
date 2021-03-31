@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientUpdateRequest;
 use App\Http\Requests\CreateClientRequest;
 use App\Http\Resources\ClientCollection;
 use App\Http\Resources\ClientResource;
@@ -33,7 +34,30 @@ class ClientsController extends Controller
     public function store(CreateClientRequest $request)
     {
         // $user = $request->user();
-        
+        // ? It's through $user that we know which trainer_id to give the new client? It's foreign key?
+
+        // $trainer = $request->user();
+
+        // $trainer->clients()->create($request->validated());
+
+        // $trainer->clients()->create([
+        //     'first_name' => $request->input('first_name'),
+        //     'last_name' => $request->input('last_name'),
+        //     'starting_weight' => $request->input('starting_weight'),
+        //     'email' => $request->input('email'),
+        //     'phone_number' => $request->input('phone_number'),    
+        // ]);
+
+        $client = Client::create([
+            'trainer_id' => 1,
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'starting_weight' => $request->input('starting_weight'),
+            'email' => $request->input('email'),
+            'phone_number' => $request->input('phone_number'),            
+        ]);
+
+        return new ClientResource($client);
     }
 
     /**
@@ -57,45 +81,24 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClientUpdateRequest $request, $id)
     {
         //
-        // return $request->all();
-        $request->validate([
-            'first_name' => [
-                'required'
-            ],
-            'last_name' => [
-                'required'
-            ],
-            'starting_weight' => [
-                'required',
-                // Add number validation
-                'numeric'
-            ],
-            'email' => [
-                'required',
-                // add email validation
-                'email'
-            ],
-            'phone_number' => [
-                // add phone number validation that matches with the format we have in the DB
-
-            ]
-            
-        ]);
+        // return $request->validated();
 
         $client = Client::findOrFail($id);
 
         $client->update([
+            'trainer_id' => 1,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'starting_weight' => $request->input('starting_weight'),
             'email' => $request->input('email'),
-            'phone_number' => $request->input('phone_number')
+            'phone_number' => $request->input('phone_number'),            
         ]);
 
         return new ClientResource($client);
+        // return $client;
     }
 
     /**

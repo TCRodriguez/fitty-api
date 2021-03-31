@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClientUpdateRequest extends FormRequest
+class CreateExerciseLogRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class ClientUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,25 +24,29 @@ class ClientUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => [
-                'required'
-            ],
-            'last_name' => [
-                'required'
-            ],
-            'starting_weight' => [
+            'exercise_name' => [
                 'required',
-                // Add number validation
+                'string'
+            ],
+            'sets' => [
+                'required',
                 'numeric'
             ],
-            'email' => [
+            'reps' => [
                 'required',
-                // add email validation
-                'email:dns'
+                'numeric'
             ],
-            'phone_number' => [
-                // add phone number validation that matches with the format we have in the DB
-                
+            'weight' => [
+                'required',
+                'numeric'
+            ],
+            'duration' => [
+                'numeric',
+                'nullable'
+            ],
+            'notes' => [
+                'string',
+                'nullable'
             ]
         ];
     }

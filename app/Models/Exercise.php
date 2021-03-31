@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class Exercise extends Model
 {
     use HasFactory;
 
@@ -13,11 +13,11 @@ class Client extends Model
 
     public function trainer()
     {
-        return $this->belongsTo(Trainer::class, 'trainer_id');
+        return $this->belongsTo(Trainer::class);
     }
 
-    public function workouts()
+    public function logs()
     {
-        return $this->hasMany(Workout::class);
+        return $this->hasMany(ExerciseLog::class);
     }
 }

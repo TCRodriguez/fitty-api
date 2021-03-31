@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class ExerciseLog extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function trainer()
+    public function workout()
     {
-        return $this->belongsTo(Trainer::class, 'trainer_id');
+        return $this->belongsTo(Workout::class);
     }
 
-    public function workouts()
+    public function exercise()
     {
-        return $this->hasMany(Workout::class);
+        return $this->belongsTo(Exercise::class);
     }
 }

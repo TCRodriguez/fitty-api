@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogsTable extends Migration
+class CreateExercisesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        Schema::create('exercises', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('trainer_id')->index();
+            $table->string('exercise_name')->index();
             $table->timestamps();
+
+            $table->foreign('trainer_id')->references('id')->on('trainers')->onDelete('cascade');
         });
     }
 
@@ -26,6 +30,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('exercises');
     }
 }

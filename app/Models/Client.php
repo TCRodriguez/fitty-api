@@ -20,4 +20,9 @@ class Client extends Model
     {
         return $this->hasMany(Workout::class);
     }
+
+    public function exerciseLogs()
+    {
+        return $this->hasManyThrough(ExerciseLog::class, Workout::class);
+    }
 }

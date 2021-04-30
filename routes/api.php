@@ -39,6 +39,7 @@ Route::put('/clients/{client}/workouts/{workout}', [ClientWorkoutsController::cl
 Route::delete('/clients/{client}/workouts/{workout}', [ClientWorkoutsController::class, 'destroy']);
 
 // Add an ExerciseLog to a ClientWorkout
+// ?? A different way to add an ExerciseLog to a Workout? How does this work?
 Route::post('/clients/{client}/workouts/{workout}/logs', [ClientsController::class, 'update']);
 
 // // Workouts Routes
@@ -51,22 +52,21 @@ Route::post('/clients/{client}/workouts/{workout}/logs', [ClientsController::cla
 // ExerciseLog routes
 Route::get('/clients/{client}/workouts/{workout}/exercise-logs', [ExerciseLogsController::class, 'index']);
 Route::get('/clients/{client}/workouts/{workout}/exercise-logs/{exercise_log}', [ExerciseLogsController::class, 'show']);
-Route::post('/exercise-logs', [ExerciseLogsController::class, 'store']);
-Route::put('/exercise-logs/{exercise-log}', [ExerciseLogsController::class, 'update']);
-Route::delete('/exercise-logs/{exercise-log}', [ExerciseLogsController::class, 'destroy']);
+Route::post('/clients/{client}/workouts/{workout}/exercise-logs/', [ExerciseLogsController::class, 'store']);
+Route::put('/clients/{client}/workouts/{workout}/exercise-logs/{exercise_log}', [ExerciseLogsController::class, 'update']);
+Route::delete('/workouts/{workout}/exercise-logs/{exercise_log}', [ExerciseLogsController::class, 'destroy']);
 
-// // Exercises routes
-// Route::get('/exercises', [ExercisesController::class, 'index']);
-// Route::get('/exercises/{exercise}', [ExercisesController::class, 'show']);
-// Route::post('/exercises', [ExercisesController::class, 'store']);
-// Route::put('/exercises/{exercise}', [ExercisesController::class, 'update']);
-// Route::delete('/exercises/{exercise}', [ExercisesController::class, 'destroy']);
+// Exercises routes
+Route::get('/exercises', [ExercisesController::class, 'index']);
+Route::post('/exercises', [ExercisesController::class, 'store']);
+Route::put('/exercises/{exercise}', [ExercisesController::class, 'update']);
+Route::delete('/exercises/{exercise}', [ExercisesController::class, 'destroy']);
 
-Route::get('/exercises/{exercise}/logs', [ExerciseLogsController::class, 'index']);
-Route::get('/exercises/{exercise}/logs/{log}', [ExerciseLogsController::class, 'show']);
-Route::post('/exercises/{exercise}/logs', [ExerciseLogsController::class, 'store']);
-Route::put('/exercises/{exercise}/logs/{log}', [ExerciseLogsController::class, 'update']);
-Route::delete('/exercises/{exercise}/logs/{log}', [ExerciseLogsController::class, 'destroy']);
+// Route::get('/exercises/{exercise}/logs', [ExerciseLogsController::class, 'index']);
+// Route::get('/exercises/{exercise}/logs/{log}', [ExerciseLogsController::class, 'show']);
+// Route::post('/exercises/{exercise}/logs', [ExerciseLogsController::class, 'store']);
+// Route::put('/exercises/{exercise}/logs/{log}', [ExerciseLogsController::class, 'update']);
+// Route::delete('/exercises/{exercise}/logs/{log}', [ExerciseLogsController::class, 'destroy']);
 
 // Route::get('/clients/{client}/logs', [ClientLogsController::class, 'show']);
 // Route::post('/clients/{client}/logs/{log}', [ClientLogsController::class, 'store']);

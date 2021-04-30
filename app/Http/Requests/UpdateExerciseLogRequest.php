@@ -25,26 +25,22 @@ class UpdateExerciseLogRequest extends FormRequest
     {
         return [
             'exercise_name' => [
-                'required',
                 'string'
             ],
             'sets' => [
-                'required',
                 'numeric'
             ],
             'reps' => [
-                'required',
                 'numeric'
             ],
             'weight' => [
-                'required',
                 'numeric'
             ],
             'duration' => [
                 'numeric',
                 'nullable'
             ],
-            'notes' => [
+            'completed_at' => [
                 'string',
                 'nullable'
             ]

@@ -20,15 +20,32 @@ class ExerciseLogsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Client $client, Workout $workout)
+    public function index($client, $workout)
     {
         // $exercise = Exercise::with('logs')->get();
 
         // return $exercise;
 
         // DB::connection()->enableQueryLog();
-        $client = Client::find(1);
+        // $exerciseLogs = Workout::where('client_id', $client)
+        //     ->where('id', $workout)
+        //     ->with('exerciseLogs')
+        //     ->pluck('exerciseLogs')
+        //     ->firstOrFail();
+        // $clientWorkout = $client->workouts()->where('client_id', $client)->with('exerciseLogs')->get();
+        $clientWorkout = Workout::where('client_id', $client)
+            ->where('id', $workout)
+            ->with('exerciseLogs.exercise')
+            ->firstOrFail();
 
+        // $clientWorkout = $client->workouts()->with('exerciseLogs')->get();
+        // $clientWorkout = Workout::where('client_id', $client)
+        //     ->where('id', $workout)
+        //     // ->with('exerciseLogs')
+        //     ->get();
+        // return $clientWorkout;
+
+        $clientExerciseLogs = $clientWorkout->exerciseLogs;
         // $client->load('workouts.exerciseLogs.exercise');
 
         // // $clientWorkouts = $client->workouts()->get();
@@ -43,11 +60,11 @@ class ExerciseLogsController extends Controller
         // $queries = DB::getQueryLog();
         // print_r($queries);
 
-        $exerciseLogs = $workout->exerciseLogs;
+        // $exerciseLogs = $workout->exerciseLogs;
 
-        return $exerciseLogs;
-
-        return new ExerciseLogCollection($exerciseLogs);
+        
+        // return $clientExerciseLogs;
+        return new ExerciseLogCollection($clientExerciseLogs);
     }
 
     /**
@@ -58,10 +75,20 @@ class ExerciseLogsController extends Controller
      */
     public function store(CreateExerciseLogRequest $request)
     {
+        $exercise = Exercise::findOrFail($request->input('exercise_id'));
         $exerciseLog = ExerciseLog::create([
-            'client_id' => 11,
-            // ''
+            // 'client_id' => 12,
+            'workout_id' => 24,
+            'exercise_id' => $exercise->id,
+            'exercise_name' => $exercise->exercise_name,
+            'sets' => $request->input('sets'),
+            'reps' => $request->input('reps'),
+            'weight' => $request->input('weight'),
+            'duration' => $request->input('duration'),
+            'completed_at' => $request->input('completed_at')
         ]);
+
+        return new ExerciseLogResource($exerciseLog);
     }
 
     /**
@@ -70,11 +97,21 @@ class ExerciseLogsController extends Controller
      * @param  \App\Models\ExerciseLog  $exerciseLog
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($client, $workout, $exerciseLog)
     {
-        $exerciseLog = ExerciseLog::findOrFail($id);
+        // $clientWorkout = Workout::where('client_id', $client)
+        //     ->where('id', $workout)
+        //     ->with('exerciseLogs')
+        //     // ->where('id', $exerciseLog)
+        //     ->firstOrFail();
+        // return $exerciseLog;
+        $clientExerciseLog = ExerciseLog::where('workout_id', $workout)
+            ->where('id', $exerciseLog)
+            ->firstOrFail();
+        // return $clientExerciseLog;
+        // $exerciseLog = ExerciseLog::findOrFail($id);
 
-        return new ExerciseLogResource($exerciseLog);
+        return new ExerciseLogResource($clientExerciseLog);
     }
 
     /**
@@ -84,10 +121,29 @@ class ExerciseLogsController extends Controller
      * @param  \App\Models\ExerciseLog  $exerciseLog
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateExerciseLogRequest $request, $id)
+    public function update(UpdateExerciseLogRequest $request, $client, $workout, $exerciseLogId)
     {
-        $exerciseLog = ExerciseLog::findOrFail($id);
-        $exerciseLog->update($request->validated());
+
+
+        $workout = Workout::where('client_id', $client)
+            ->where('id', $workout)
+            ->firstOrFail();
+
+        $exerciseLog = $workout->exerciseLogs()->where('id', $exerciseLogId)
+            ->firstOrFail();
+        // ! Why doesn't this work?
+        // $exerciseLog->update($request->validated());
+
+        // $exerciseLog = ExerciseLog::where('workout_id', $workout)
+        //     ->where('id', $id);
+
+        $exerciseLog->update([
+            'sets' => $request->input('sets'),
+            'reps' => $request->input('reps'),
+            'weight' => $request->input('weight'),
+            'duration' => $request->input('duration'),
+            'completed_at' => $request->input('completed_at')
+        ]);
 
         return new ExerciseLogResource($exerciseLog);
     }
@@ -98,9 +154,13 @@ class ExerciseLogsController extends Controller
      * @param  \App\Models\ExerciseLog  $exerciseLog
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($workout, $id)
     {
-        $exerciseLog = ExerciseLog::findOrFail($id);
+        // $exerciseLog = ExerciseLog::findOrFail($id);
+        $exerciseLog = ExerciseLog::where('workout_id', $workout)
+            ->where('id', $id)
+            ->firstOrFail();
+
         $exerciseLog->delete();
 
         return new ExerciseLogResource($exerciseLog);

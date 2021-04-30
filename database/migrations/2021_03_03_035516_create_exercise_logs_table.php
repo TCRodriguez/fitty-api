@@ -16,7 +16,7 @@ class CreateExerciseLogsTable extends Migration
         Schema::create('exercise_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('workout_id')->index();
-            $table->unsignedBigInteger('exercise_id')->nullable()->index();
+            $table->unsignedBigInteger('exercise_id')->index();
             $table->string('exercise_name')->nullable();
             $table->unsignedInteger('sets')->nullable();
             $table->unsignedInteger('reps')->nullable();

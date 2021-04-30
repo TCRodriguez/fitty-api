@@ -13,7 +13,7 @@ class CreateExerciseLogRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,27 +25,19 @@ class CreateExerciseLogRequest extends FormRequest
     {
         return [
             'exercise_name' => [
-                'required',
                 'string'
             ],
             'sets' => [
-                'required',
                 'numeric'
             ],
             'reps' => [
-                'required',
                 'numeric'
             ],
             'weight' => [
-                'required',
                 'numeric'
             ],
             'duration' => [
                 'numeric',
-                'nullable'
-            ],
-            'notes' => [
-                'string',
                 'nullable'
             ]
         ];

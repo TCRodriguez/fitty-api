@@ -30,10 +30,13 @@ class ExercisesController extends Controller
     */
     public function store(CreateExerciseRequest $request)
     {
-        Exercise::create([
+        
+        $exercise = Exercise::create([
             'trainer_id' => 1,
             'exercise_name' => $request->input('exercise_name')
         ]);
+
+        return new ExerciseResource($exercise);
     }
 
     /**
@@ -63,6 +66,8 @@ class ExercisesController extends Controller
             'exercise_name' => $request->input('exercise_name')
         ]);
 
+        return new ExerciseResource($exercise);
+
     }
 
     /**
@@ -73,9 +78,10 @@ class ExercisesController extends Controller
      */
     public function destroy($id)
     {
-        $exercise = Exercise::find($id);
+        $exercise = Exercise::findOrFail($id);
+        
         $exercise->delete();
 
-        return new ExerciseResource($client);
+        return new ExerciseResource($exercise);
     }
 }

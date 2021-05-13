@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientUpdateRequest;
@@ -8,6 +9,8 @@ use App\Http\Resources\ClientCollection;
 use App\Http\Resources\ClientResource;
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Models\Trainer;
+use Illuminate\Auth\Access\Response;
 
 class ClientsController extends Controller
 {
@@ -16,11 +19,11 @@ class ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
 
-        $clients = Client::paginate(60);
+        $clients = Client::where('trainer_id', $request->user()->id)->paginate(60);
 
         return new ClientCollection($clients);
     }
@@ -49,7 +52,7 @@ class ClientsController extends Controller
         // ]);
 
         $client = Client::create([
-            'trainer_id' => 1,
+            'trainer_id' => $request->user()->id,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'starting_weight' => $request->input('starting_weight'),
@@ -66,12 +69,38 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        // * Looks like we'll need to create some policies!
+        // $client = Client::findOrFail($id);
+        // $client = Client::where('trainer_id', $request->user()->id)
+        //     ->where('id', $id)
+        //     ->get();
+
         $client = Client::findOrFail($id);
 
-        return new ClientResource($client);
+        $this->authorize('view',$client);
+
+        //public function view($user, Client $client){
+        //    return $user->id === $client->trainer_id;
+        //}
+
+
+        // Get currently logged in trainer's list of client IDs
+        $trainer = Trainer::findOrFail($request->user()->id);
+        // return $trainer->id;
+        // Search for requested client ID in that array
+        $clients = Client::where('trainer_id', $trainer->id)->pluck('id')->toArray();
+        // return $clients;
+
+        if(in_array($id, $clients)){
+            return true;
+        }
+
+        return Response::deny("Unauthorized");
+        // If the id is in that array, then return the resource. If not, return unauthorized
+
+        // return new ClientResource($client);
     }
 
     /**

@@ -79,28 +79,12 @@ class ClientsController extends Controller
 
         $client = Client::findOrFail($id);
 
-        $this->authorize('view',$client);
 
-        //public function view($user, Client $client){
-        //    return $user->id === $client->trainer_id;
-        //}
+        // ? Carlos mentioned that we could use Gate:: here but also $this....why?
+        $this->authorize('view', $client);
 
 
-        // Get currently logged in trainer's list of client IDs
-        $trainer = Trainer::findOrFail($request->user()->id);
-        // return $trainer->id;
-        // Search for requested client ID in that array
-        $clients = Client::where('trainer_id', $trainer->id)->pluck('id')->toArray();
-        // return $clients;
-
-        if(in_array($id, $clients)){
-            return true;
-        }
-
-        return Response::deny("Unauthorized");
-        // If the id is in that array, then return the resource. If not, return unauthorized
-
-        // return new ClientResource($client);
+        return new ClientResource($client);
     }
 
     /**
@@ -117,8 +101,10 @@ class ClientsController extends Controller
 
         $client = Client::findOrFail($id);
 
+        $this->authorize('update', $client);
+
         $client->update([
-            'trainer_id' => 1,
+            'trainer_id' => $request->resource()->id,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'starting_weight' => $request->input('starting_weight'),
@@ -127,7 +113,6 @@ class ClientsController extends Controller
         ]);
 
         return new ClientResource($client);
-        // return $client;
     }
 
     /**
@@ -140,6 +125,9 @@ class ClientsController extends Controller
     {
         //
         $client = Client::findOrFail($id);
+
+        $this->authorize('delete', $client);
+
         $client->delete();
 
         return new ClientResource($client);

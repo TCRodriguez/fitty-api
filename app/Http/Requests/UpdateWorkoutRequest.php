@@ -25,7 +25,10 @@ class UpdateWorkoutRequest extends FormRequest
     {
         return [
             'client_id' => [
-                'required'
+                // 'required'
+            ],
+            'name' => [
+                'string'
             ]
         ];
     }

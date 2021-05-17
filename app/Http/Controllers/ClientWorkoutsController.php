@@ -17,15 +17,22 @@ class ClientWorkoutsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Client $client)
+    public function index(Request $request, $client)
     {
         // * This wouldn't work without the parantheses ()
         
-        $clientWorkouts = $client->workouts()->with('exerciseLogs')->get(); 
+        // $clientWorkouts = $client->workouts()->with('exerciseLogs')->get();
+        // return $client;
+        $client = Client::findOrFail($client);
+
+        $this->authorize('view', $client);
+        // return $client;
+        $clientWorkouts = Workout::where('client_id', $client->id)->with('exerciseLogs')->paginate(10);
+        // $clientWorkouts
         // $clientWorkouts = Workout::with('exerciseLogs')->get();
 
         // $clientWorkouts = $client->workouts;
-        $workouts = Workout::paginate(10);
+        // $workouts = Workout::paginate(10);
 
         return new WorkoutCollection($clientWorkouts);
     }
@@ -38,6 +45,7 @@ class ClientWorkoutsController extends Controller
      */
     public function store(CreateWorkoutRequest $request)
     {
+        // ? How do we account for the "currently-selected" Client?
         $clientWorkout = Workout::create([
             'client_id' => $request->input('client_id'),
             'name' => $request->input('name')
@@ -54,7 +62,12 @@ class ClientWorkoutsController extends Controller
      */
     public function show($client, $workout)
     {
-        $clientWorkout = Workout::where('client_id', $client)
+
+        $client = Client::findOrFail($client);
+
+        $this->authorize('view', $client);
+
+        $clientWorkout = Workout::where('client_id', $client->id)
             ->where('id', $workout)
             ->with('exerciseLogs')
             ->firstOrFail();
@@ -74,13 +87,19 @@ class ClientWorkoutsController extends Controller
     public function update(UpdateWorkoutRequest $request, $client, $workout)
     {
         // $workout = Workout::findOrFail($id);
-        $clientWorkout = Workout::where('client_id', $client)
+        $client = Client::findOrFail($client);
+
+        $this->authorize('update', $client);
+
+        $clientWorkout = Workout::where('client_id', $client->id)
             ->where('id', $workout)
             ->firstOrFail();
-
+        // return $clientWorkout;
         // $clientWorkout->update($request->validated());
+
         $clientWorkout->update([
-            'name' => $request->input('name')
+            'client_id' => $request->input('client_id'),
+            'name' => $request->input('name'),
         ]);
 
         return new WorkoutResource($clientWorkout);
@@ -94,7 +113,16 @@ class ClientWorkoutsController extends Controller
      */
     public function destroy($client, $workout)
     {
-        $clientWorkout = Workout::where('client_id', $client)
+        // $clientWorkout = Workout::where('client_id', $client)
+        //     ->where('id', $workout)
+        //     ->firstOrFail();
+        
+        // $this->authorize('delete', $clientWorkout->client_id);
+        $client = Client::findOrFail($client);
+
+        $this->authorize('delete', $client);
+
+        $clientWorkout = Workout::where('client_id', $client->id)
             ->where('id', $workout)
             ->firstOrFail();
 

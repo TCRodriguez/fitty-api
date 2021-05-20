@@ -15,9 +15,10 @@ class ExercisesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $exercises = Exercise::paginate(5);
+
+        $exercises = Exercise::where('trainer_id', $request->user()->id)->paginate(5);
 
         return new ExerciseCollection($exercises);
     }
@@ -32,7 +33,7 @@ class ExercisesController extends Controller
     {
         
         $exercise = Exercise::create([
-            'trainer_id' => 1,
+            'trainer_id' => $request->user()->id,
             'exercise_name' => $request->input('exercise_name')
         ]);
 
@@ -59,10 +60,18 @@ class ExercisesController extends Controller
      * @param  \App\Models\Exercise  $exercise
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Exercise $exercise)
+    public function update(Request $request, $exercise)
     {
+        // return $exercise;
+        $exercise = Exercise::findOrFail($exercise);
+
+        // return $exercise;
+
+        $this->authorize('view', $exercise);
+
+        // return $exercise;
         $exercise->update([
-            'trainer_id' => 1,
+            'trainer_id' => $request->user()->id,
             'exercise_name' => $request->input('exercise_name')
         ]);
 
@@ -76,9 +85,13 @@ class ExercisesController extends Controller
      * @param  \App\Models\Exercise  $exercise
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($exercise)
     {
-        $exercise = Exercise::findOrFail($id);
+        
+        $exercise = Exercise::findOrFail($exercise);
+
+        $this->authorize('view', $exercise);
+
         
         $exercise->delete();
 

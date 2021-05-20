@@ -33,11 +33,15 @@ class ExerciseLogsController extends Controller
         //     ->pluck('exerciseLogs')
         //     ->firstOrFail();
         // $clientWorkout = $client->workouts()->where('client_id', $client)->with('exerciseLogs')->get();
-        $clientWorkout = Workout::where('client_id', $client)
+        $client = Client::find($client);
+
+        $this->authorize('view', $client);
+        $clientWorkout = Workout::where('client_id', $client->id)
             ->where('id', $workout)
             ->with('exerciseLogs.exercise')
             ->firstOrFail();
 
+        // return $clientWorkout;
         // $clientWorkout = $client->workouts()->with('exerciseLogs')->get();
         // $clientWorkout = Workout::where('client_id', $client)
         //     ->where('id', $workout)
@@ -105,6 +109,9 @@ class ExerciseLogsController extends Controller
         //     // ->where('id', $exerciseLog)
         //     ->firstOrFail();
         // return $exerciseLog;
+        $client = Client::find($client);
+        $this->authorize('view', $client);
+
         $clientExerciseLog = ExerciseLog::where('workout_id', $workout)
             ->where('id', $exerciseLog)
             ->firstOrFail();
@@ -124,18 +131,22 @@ class ExerciseLogsController extends Controller
     public function update(UpdateExerciseLogRequest $request, $client, $workout, $exerciseLogId)
     {
 
+        $client = Client::find($client);
+        $this->authorize('view', $client);
 
-        $workout = Workout::where('client_id', $client)
+        $workout = Workout::where('client_id', $client->id)
             ->where('id', $workout)
             ->firstOrFail();
 
-        $exerciseLog = $workout->exerciseLogs()->where('id', $exerciseLogId)
+        $exerciseLog = $workout->exerciseLogs()
+            ->where('id', $exerciseLogId)
             ->firstOrFail();
         // ! Why doesn't this work?
         // $exerciseLog->update($request->validated());
 
         // $exerciseLog = ExerciseLog::where('workout_id', $workout)
         //     ->where('id', $id);
+        // return $exerciseLog;
 
         $exerciseLog->update([
             'sets' => $request->input('sets'),
@@ -154,13 +165,19 @@ class ExerciseLogsController extends Controller
      * @param  \App\Models\ExerciseLog  $exerciseLog
      * @return \Illuminate\Http\Response
      */
-    public function destroy($workout, $id)
+    public function destroy($client, $workout, $id)
     {
         // $exerciseLog = ExerciseLog::findOrFail($id);
+
+        $client = Client::find($client);
+        $this->authorize('view', $client);
+
         $exerciseLog = ExerciseLog::where('workout_id', $workout)
             ->where('id', $id)
             ->firstOrFail();
 
+
+        // return $exerciseLog;
         $exerciseLog->delete();
 
         return new ExerciseLogResource($exerciseLog);

@@ -54,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/clients/{client}/workouts/{workout}/exercise-logs/{exercise_log}', [ExerciseLogsController::class, 'show']);
     Route::post('/clients/{client}/workouts/{workout}/exercise-logs/', [ExerciseLogsController::class, 'store']);
     Route::put('/clients/{client}/workouts/{workout}/exercise-logs/{exercise_log}', [ExerciseLogsController::class, 'update']);
-    Route::delete('/workouts/{workout}/exercise-logs/{exercise_log}', [ExerciseLogsController::class, 'destroy']);
+    Route::delete('/clients/{client}/workouts/{workout}/exercise-logs/{exercise_log}', [ExerciseLogsController::class, 'destroy']);
 
     // Exercises routes
     Route::get('/exercises', [ExercisesController::class, 'index']);

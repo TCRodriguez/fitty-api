@@ -8,7 +8,6 @@ use App\Http\Controllers\ClientWorkoutsController;
 use App\Http\Controllers\ExerciseLogsController;
 use App\Http\Controllers\ExercisesController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\WorkoutsController;
 use App\Models\Trainer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -31,7 +30,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function (){
 
     // Client routes
-    Route::get('/clients', [ClientsController::class, 'index'])->middleware('auth:sanctum');
+    Route::get('/clients', [ClientsController::class, 'index']);
     Route::get('/clients/{client}', [ClientsController::class, 'show']);
     Route::post('/clients', [ClientsController::class, 'store']);
     Route::put('/clients/{client}', [ClientsController::class, 'update']);

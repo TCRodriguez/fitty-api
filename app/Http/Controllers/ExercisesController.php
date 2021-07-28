@@ -18,7 +18,8 @@ class ExercisesController extends Controller
     public function index(Request $request)
     {
 
-        $exercises = Exercise::where('trainer_id', $request->user()->id)->paginate(5);
+        // $exercises = Exercise::where('trainer_id', $request->user()->id)->paginate(5);
+        $exercises = Exercise::where('trainer_id', $request->user()->id)->get();
 
         return new ExerciseCollection($exercises);
     }

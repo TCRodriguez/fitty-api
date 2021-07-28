@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\ExercisePolicy;
 use App\Policies\ClientPolicy;
 use App\Policies\ExerciseLogsPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -17,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Client::class => ClientPolicy::class,
+        Exercise::class => ExercisePolicy::class,
         ClientWorkout::class => ClientWorkoutPolicy::class,
         ExerciseLog::class => ExerciseLogsPolicy::class,
     ];

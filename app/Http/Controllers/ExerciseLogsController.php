@@ -82,7 +82,7 @@ class ExerciseLogsController extends Controller
         $exercise = Exercise::findOrFail($request->input('exercise_id'));
         $exerciseLog = ExerciseLog::create([
             // 'client_id' => 12,
-            'workout_id' => 24,
+            'workout_id' => $request->input('workout_id'),
             'exercise_id' => $exercise->id,
             'exercise_name' => $exercise->exercise_name,
             'sets' => $request->input('sets'),

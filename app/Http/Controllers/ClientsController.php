@@ -53,6 +53,7 @@ class ClientsController extends Controller
 
         $client = Client::create([
             'trainer_id' => $request->user()->id,
+            // 'trainer_id' => $request->input('id'),
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'starting_weight' => $request->input('starting_weight'),
@@ -94,17 +95,18 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ClientUpdateRequest $request, $id)
+    public function update(ClientUpdateRequest $request, $client)
     {
         //
         // return $request->validated();
+        
+        $client = Client::findOrFail($client);
+        // return $client;
 
-        $client = Client::findOrFail($id);
-
-        $this->authorize('update', $client);
+        $this->authorize('view', $client);
 
         $client->update([
-            'trainer_id' => $request->resource()->id,
+            'trainer_id' => $request->user()->id,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'starting_weight' => $request->input('starting_weight'),

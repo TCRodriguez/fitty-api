@@ -16,6 +16,7 @@ class WorkoutResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
+            'date' => $this->resource->created_at,
             'client_id' => $this->resource->client_id,
             'name' => $this->resource->name,
             'logs' => new ExerciseLogCollection($this->resource->exerciseLogs)

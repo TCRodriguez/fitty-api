@@ -38,7 +38,7 @@ class ClientUpdateRequest extends FormRequest
             'email' => [
                 'required',
                 // add email validation
-                'email:dns'
+                'email'
             ],
             'phone_number' => [
                 // add phone number validation that matches with the format we have in the DB

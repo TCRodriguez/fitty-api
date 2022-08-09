@@ -23,7 +23,8 @@ class WorkoutFactory extends Factory
     public function definition()
     {
         return [
-            'client_id' => rand(1, 10)
+            'client_id' => rand(1, 10),
+            'date' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
         ];
     }
 }

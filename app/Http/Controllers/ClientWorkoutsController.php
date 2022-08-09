@@ -48,7 +48,7 @@ class ClientWorkoutsController extends Controller
         // ? How do we account for the "currently-selected" Client?
         $clientWorkout = Workout::create([
             'client_id' => $request->input('client_id'),
-            'name' => $request->input('name')
+            'date' => $request->input('date')
         ]);
 
         return new WorkoutResource($clientWorkout);
@@ -99,7 +99,7 @@ class ClientWorkoutsController extends Controller
 
         $clientWorkout->update([
             'client_id' => $request->input('client_id'),
-            'name' => $request->input('name'),
+            'date' => $request->input('date'),
         ]);
 
         return new WorkoutResource($clientWorkout);

@@ -19,20 +19,11 @@ class ClientWorkoutsController extends Controller
      */
     public function index(Request $request, $client)
     {
-        // * This wouldn't work without the parantheses ()
-        
-        // $clientWorkouts = $client->workouts()->with('exerciseLogs')->get();
-        // return $client;
         $client = Client::findOrFail($client);
 
         $this->authorize('view', $client);
-        // return $client;
-        $clientWorkouts = Workout::where('client_id', $client->id)->with('exerciseLogs')->paginate(10);
-        // $clientWorkouts
-        // $clientWorkouts = Workout::with('exerciseLogs')->get();
 
-        // $clientWorkouts = $client->workouts;
-        // $workouts = Workout::paginate(10);
+        $clientWorkouts = Workout::where('client_id', $client->id)->with('exerciseLogs')->get();
 
         return new WorkoutCollection($clientWorkouts);
     }

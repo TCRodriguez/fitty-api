@@ -148,7 +148,11 @@ class ExerciseLogsController extends Controller
         //     ->where('id', $id);
         // return $exerciseLog;
 
+        $exercise = Exercise::findOrFail($request->input('exercise_id'));
+
         $exerciseLog->update([
+            'exercise_id' => $exercise->id,
+            'exercise_name' => $exercise->exercise_name,
             'sets' => $request->input('sets'),
             'reps' => $request->input('reps'),
             'weight' => $request->input('weight'),

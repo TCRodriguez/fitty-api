@@ -31,18 +31,18 @@ class ClientUpdateRequest extends FormRequest
                 'required'
             ],
             'starting_weight' => [
-                'required',
                 // Add number validation
-                'numeric'
+                'numeric',
+                'nullable'
             ],
             'email' => [
-                'required',
                 // add email validation
-                'email'
+                'email',
+                'nullable'
             ],
             'phone_number' => [
                 // add phone number validation that matches with the format we have in the DB
-                
+               'nullable', 
             ]
         ];
     }

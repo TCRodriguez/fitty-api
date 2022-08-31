@@ -18,9 +18,9 @@ class CreateClientsTable extends Migration
             $table->unsignedBigInteger('trainer_id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->integer('starting_weight');
-            $table->string('email');
-            $table->string('phone_number')->nullable();        
+            $table->integer('starting_weight')->nullable()->change();
+            $table->string('email')->nullable()->change();
+            $table->string('phone_number')->nullable()->change();        
             $table->timestamps();
 
             $table->foreign('trainer_id')

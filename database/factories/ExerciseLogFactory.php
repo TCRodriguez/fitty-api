@@ -24,7 +24,7 @@ class ExerciseLogFactory extends Factory
     {
         return [
             'workout_id' => rand(1, 50),
-            'exercise_id' => rand(1, 50),
+            'exercise_id' => rand(1, 19),
             'sets' => rand(1, 5),
             'reps' => rand(1, 20),
             'weight' => $this->faker->numberBetween(5, 50),

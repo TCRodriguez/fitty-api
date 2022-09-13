@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientWorkoutsController;
 use App\Http\Controllers\ExerciseLogsController;
 use App\Http\Controllers\ExercisesController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TrainersController;
 use App\Models\Trainer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -22,6 +23,10 @@ use Illuminate\Validation\ValidationException;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/trainers', [TrainersController::class, 'store']);
+Route::put('/trainers/{trainer}', [TrainersController::class, 'update']);
+Route::delete('/trainers/{trainer}', [TrainersController::class, 'destroy']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTrainerRequest;
+use App\Http\Requests\TrainerUpdateRequest;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class TrainersController extends Controller
 {
-    public function store(Request $request)
+    public function store(CreateTrainerRequest $request)
     {
-        $hashedPassword = Hash::make($request->password);
-
         $trainer = Trainer::create([
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
@@ -22,10 +22,14 @@ class TrainersController extends Controller
         return $request;
     }
 
-    public function update(Request $request, Trainer $trainer)
+    public function update(TrainerUpdateRequest $request, $trainer)
     {
         // dd($request);
-        // $trainer = Trainer::findOrFail($trainer);
+        // return $request;
+        $trainer = Trainer::findOrFail($trainer);
+        // return $trainer;
+
+        // $this->authorize('update', $trainer);
 
         $trainer->update([
             'first_name' => $request->input('first_name'),

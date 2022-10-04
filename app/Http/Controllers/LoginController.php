@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TokenResource;
+use App\Http\Resources\TrainerResource;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -30,6 +31,11 @@ class LoginController extends Controller
     
         $token = $trainer->createToken('mobile app')->plainTextToken;
 
-        return new TokenResource($token);
+        $loggedInTrainer = [
+            'token' => new TokenResource($token),
+            'trainer' => new TrainerResource($trainer)
+        ];
+        // return new TokenResource($token);
+        return $loggedInTrainer;
     }
 }

@@ -25,6 +25,7 @@ use Illuminate\Validation\ValidationException;
 */
 
 Route::post('/trainers', [TrainersController::class, 'store']);
+Route::get('trainers/{trainer}', [TrainersController::class, 'show']);
 Route::put('/trainers/{trainer}', [TrainersController::class, 'update']);
 Route::delete('/trainers/{trainer}', [TrainersController::class, 'destroy']);
 
@@ -33,6 +34,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function (){
+
+
 
     // Client routes
     Route::get('/clients', [ClientsController::class, 'index']);

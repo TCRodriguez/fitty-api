@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTrainerRequest;
 use App\Http\Requests\TrainerUpdateRequest;
+use App\Http\Resources\TrainerResource;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class TrainersController extends Controller
 {
+    public function show(Request $request, $id)
+    {
+        $trainer = Trainer::findOrFail($id);
+
+        return new TrainerResource($trainer);
+    }
+
     public function store(CreateTrainerRequest $request)
     {
         $trainer = Trainer::create([
@@ -19,7 +27,7 @@ class TrainersController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->password),
         ]);
-        return $request;
+        return new TrainerResource($trainer);
     }
 
     public function update(TrainerUpdateRequest $request, $trainer)

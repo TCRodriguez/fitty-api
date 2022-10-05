@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateClientRequest extends FormRequest
+class TrainerUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,19 +30,15 @@ class CreateClientRequest extends FormRequest
             'last_name' => [
                 'required'
             ],
-            'starting_weight' => [
-                // Add number validation
-                'numeric',
-                'nullable'
+            'user_name' => [
+                'required'
             ],
             'email' => [
-                // add email validation
-                'email',
-                'nullable'
+                'required',
+                'email'
             ],
-            'phone_number' => [
-                // add phone number validation that matches with the format we have in the DB
-                'nullable'
+            'password' => [
+                'required'
             ]
         ];
     }

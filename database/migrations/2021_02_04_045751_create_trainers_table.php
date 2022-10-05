@@ -18,7 +18,7 @@ class CreateTrainersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('user_name');
-            $table->string('email')->unqiue();
+            $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

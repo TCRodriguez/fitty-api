@@ -37,9 +37,9 @@ class TrainerUpdateRequest extends FormRequest
                 'required',
                 'email'
             ],
-            'password' => [
-                'required'
-            ]
+            // 'password' => [
+            //     'required'
+            // ]
         ];
     }
 }

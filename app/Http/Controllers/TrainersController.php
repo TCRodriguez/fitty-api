@@ -44,7 +44,8 @@ class TrainersController extends Controller
             'last_name' => $request->input('last_name'),
             'user_name' => $request->input('user_name'),
             'email' => $request->input('email'),
-            'password' => Hash::make($request->password), 
+            // 'password' => Hash::make($request->password), 
+            // 'password' => $trainer->password,
         ]);
 
         return $trainer;

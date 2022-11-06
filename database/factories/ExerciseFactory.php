@@ -23,7 +23,7 @@ class ExerciseFactory extends Factory
     {
         return [
             'trainer_id' => 1,
-            'exercise_name' => $this->faker->word()
+            'exercise_name' => $this->faker->unique()->word()
         ];
     }
 }

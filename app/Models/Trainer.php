@@ -23,4 +23,9 @@ class Trainer extends Authenticatable
     {
         return $this->hasMany(Exercise::class);
     }
+
+    // public function logs()
+    // {
+    //     return $this->hasManyThrough(ExerciseLog::class, Client::class);
+    // }
 }

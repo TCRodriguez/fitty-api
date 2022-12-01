@@ -16,7 +16,7 @@ class CreateWorkoutsTable extends Migration
         Schema::create('workouts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('client_id');
-            $table->string('date')->nullable();
+            $table->string('name')->nullable();
             $table->date('completed_at')->nullable();
             $table->timestamps();
 
